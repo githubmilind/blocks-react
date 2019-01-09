@@ -15,11 +15,9 @@ class BlockData extends Component {
     render(){
         return (
             <div>
-                <div>
-                    <div>{this.props.title}</div>
-                    <div><textarea rows="5" columns="50" 
-                        onChange={this.handleChange}></textarea></div>
-                </div>
+                <div>{this.props.title}</div>
+                <div><textarea className="form-control" rows="5" 
+                    onChange={this.handleChange}></textarea></div>
             </div>
         );        
     }

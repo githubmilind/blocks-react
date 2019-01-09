@@ -5,7 +5,7 @@ const BasicComponent = (props) => {
         <div>
             <div>
                 <div>{props.title}</div>
-                <div>{props.value}</div>
+                <div style={{fontSize:12}}>{props.value}</div>
             </div>
         </div>
     );
