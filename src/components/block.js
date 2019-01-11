@@ -16,12 +16,12 @@ class Block extends React.Component {
 
         this.state = {
             id: props.blockId,
-            nonce: "1",
+            nonce: "0",
             data: "",
-            hash: "0x",
+            hash: "0x00",
             prevHash: props.prevHash,
 
-            valid: props.blockStatus,
+            mined: props.blockStatus,
             buttonDisabled: false,
             buttonText: "Mine Block"
         };
@@ -31,10 +31,11 @@ class Block extends React.Component {
    }
 
     onDataChange(newValue){
-        this.setState({data: newValue, valid: 'false'});
+        this.setState({data: newValue, mined: 'false'});
     }
 
     mineBlock(evt){
+
         this.setState({buttonDisabled: true, buttonText: "please wait..."});
 
         let hashval = '0x00';
@@ -46,7 +47,7 @@ class Block extends React.Component {
                 found = true;
 
                 if( '0x' + hashval != this.state.hash){
-                    this.setState({nonce: x, hash: '0x' +hashval, valid: 'true'});
+                    this.setState({nonce: x, hash: '0x' +hashval, mined: 'true'});
                     this.props.invalidateBlocks(this.state.id, hashval);
                 }
             }
@@ -56,7 +57,7 @@ class Block extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ valid: nextProps.blockStatus, prevHash: nextProps.prevHash })
+        this.setState({ mined: nextProps.blockStatus, prevHash: nextProps.prevHash })
    }
 
     render1(){
@@ -68,21 +69,30 @@ class Block extends React.Component {
     render(){
         return (
             <div style={{width:500, 
-                backgroundColor:this.state.valid == 'true' ?'green':'red'}} >
+                backgroundColor:this.state.mined == 'true' ?'green': this.state.mined == 'new'? 'blue' : 'red'}} >
                 <div style={{width:'95%', margin:10}}>
                 <ul className="list-unstyled list-group">
-                    <li className="list-group-item"><BasicComponent title="Block Id" 
-                                    value={this.state.id} /></li>
-                    <li className="list-group-item"><BasicComponent title="Nonce" 
-                                    value={this.state.nonce} /></li>
+                    <li className="list-group-item">
+                        <div style={{height:40}}>
+                            <div style={{float:"left", width:150}}>
+                                <BasicComponent title="Block Id" value={this.state.id+1} />
+                            </div>
+                            <div style={{float:"left", width:150}}>
+                                <BasicComponent title="Nonce" value={this.state.nonce} />
+                            </div>
+                            <div style={{float:"left"}}>
+                                <button 
+                                    disabled={this.state.buttonDisabled}
+                                    onClick={this.mineBlock}>{this.state.buttonText}</button>
+                            </div>
+                        </div>
+                    </li>
+
                     <li className="list-group-item"><BlockData title="Block data" 
                                     value={this.state.data}
                                     onChange={this.onDataChange}></BlockData></li>
-                    <li className={this.state.valid == 'true' ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title="Block hash" 
+                    <li className={this.state.mined == 'true' ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title="Block hash" 
                                     value={this.state.hash} /></li>
-                    <li className={"list-group-item"}><button 
-                            disabled={this.state.buttonDisabled}
-                            onClick={this.mineBlock}>{this.state.buttonText}</button></li>
                 </ul>
                 </div>
             </div>

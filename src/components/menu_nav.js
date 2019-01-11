@@ -21,20 +21,19 @@ class MenuNav extends Component {
         return (
             <BrowserRouter>
             <div>
-                <header>
-                    <Link exact="true" to="/">Home&nbsp;</Link>
+                <div>
+                    <Link exact="true" to="/home">Home&nbsp;</Link>
                     <Link exact="true" to="/marketing">Marketing&nbsp;</Link>
                     <Link exact="true" to="/automation">Automation</Link>
-                </header>
+                </div>
                 <hr />
-                    <main>
-
+                    <div>
                     <Switch>
-                    <Route exact path="/home" Component = {Home} />
-                    <Route exact path="/marketing" Component = {Marketing} />
-                    <Route exact path="/automation" Component = {Automation} />
+                    <Route exact path="/home" component={Home} />
+                    <Route exact path="/marketing" component={Marketing} />
+                    <Route exact path="/automation" component={Automation} />
                     </Switch>
-                    </main>
+                    </div>
             </div>
             </BrowserRouter>
         );
