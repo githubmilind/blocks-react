@@ -4,14 +4,12 @@ import {Link} from 'react-router-dom';
 import {Switch, Route} from 'react-router-dom';
 
 import BlockList from './block_list';
+import Crypto from './crypto';
 
+var DefaultRoute = BrowserRouter.DefaultRoute;
 
 const Cryptography = () => {
        return ( <div><h1>Cryptography</h1></div> );
-}
-
-const Block = () =>{
-        return (<div><h1>Block</h1></div>);
 }
 
 const BlockChain = () => {
@@ -23,25 +21,24 @@ class MenuNav extends Component {
     render() {
         return (
             <BrowserRouter>
-            <div>
-                <header>
-                <div className="row">
-                <Link exact="true" to="/cryptography"><div className="col-md-2">Cryptography</div></Link>
-                <Link exact="true" to="/block"><div className="col-md-2">Block</div></Link>
-                <Link exact="true" to="/blocklist"><div className="col-md-2">Block list</div></Link>
-                <Link exact="true" to="/blockchain"><div className="col-md-2">Blockchain distributed</div></Link>
-            </div>                
-                </header>
-                <hr />
+                <div>
+                    <header>
+                        <div className="row">
+                            <Link exact="true" to="/cryptography"><div className="col-md-2">Cryptography</div></Link>
+                            <Link exact="true" to="/blocklist"><div className="col-md-2">Block list</div></Link>
+                            <Link exact="true" to="/blockchain"><div className="col-md-2">Blockchain distributed</div></Link>
+                        </div>
+                    </header>
+                    <hr />
                     <div>
-                    <Switch>
-                    <Route exact path="/cryptography" component={Cryptography} />
-                    <Route exact path="/block" component={Block} />
-                    <Route exact path="/blocklist" component={BlockList} />
-                    <Route exact path="/blockchain" component={BlockChain} />
-                    </Switch>
+                        <Switch>
+                            <Route path="/cryptography" component={Crypto} />
+                            <Route exact path="/blocklist" component={BlockList} />
+                            <Route exact path="/blockchain" component={BlockChain} />
+                            <Route path="*" component={Crypto} />
+                        </Switch>
                     </div>
-            </div>
+                </div>
             </BrowserRouter>
         );
     }

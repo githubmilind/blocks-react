@@ -18,7 +18,7 @@ class Block extends React.Component {
             id: props.blockId,
             nonce: "0",
             data: "",
-            hash: "0x00",
+            hash: props.blockHash,
             prevHash: props.prevHash,
 
             mined: props.blockStatus,
@@ -60,11 +60,6 @@ class Block extends React.Component {
         this.setState({ mined: nextProps.blockStatus, prevHash: nextProps.prevHash })
    }
 
-    render1(){
-        return (
-                <MenuNav />
-        );
-    }
 
     render(){
         return (
