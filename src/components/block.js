@@ -70,7 +70,8 @@ class Block extends React.Component {
         return (
             <div style={{width:500, 
                 backgroundColor:this.state.mined == 'true' ?'green': this.state.mined == 'new'? 'blue' : 'red'}} >
-                <div style={{width:'95%', margin:10}}>
+                <div style={{width:'99%', margin:3, height:386}}>
+                <div style={{height:2}}></div>
                 <ul className="list-unstyled list-group">
                     <li className="list-group-item">
                         <div style={{height:40}}>
@@ -87,7 +88,7 @@ class Block extends React.Component {
                             </div>
                         </div>
                     </li>
-
+                    <li className="list-group-item"><BasicComponent title="Previous Block hash" value={this.state.prevHash} /></li>
                     <li className="list-group-item"><BlockData title="Block data" 
                                     value={this.state.data}
                                     onChange={this.onDataChange}></BlockData></li>

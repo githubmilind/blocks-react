@@ -32,16 +32,20 @@ class BlockList extends React.Component {
                          });
     }
 
-    render(){
+    render() {
         return (
             <div>
-            <p>Block chain in react</p>
-            {this.state.blocks.map((item, index, array) => (<Block key={item.id} 
-                                    blockId={item.id} 
-                                    prevHash={index-1 > -1 ? array[index-1].hash : '0x00'}
-                                    blockStatus={item.mined} 
-                                    invalidateBlocks={this.invalidateBlocks} />))}
-            <button className="btn btn-primary btn-lg" onClick={this.addNewBlock}>Add New Block</button>
+                <p>Block list</p>
+                <div style={{ display: 'table' }}>
+                    {this.state.blocks.map((item, index, array) => (<div key={item.id} style={{ display: 'table-cell', paddingRight: 5 }}><Block key={item.id}
+                        blockId={item.id}
+                        prevHash={index - 1 > -1 ? array[index - 1].hash : '0x00'}
+                        blockStatus={item.mined}
+                        invalidateBlocks={this.invalidateBlocks} /></div>))}
+                    <div className="align-items-center justify-content-center">
+                        <button className="btn btn-primary btn-lg" onClick={this.addNewBlock}>Add New Block</button>
+                    </div>
+                </div>
             </div>
         );
     }
