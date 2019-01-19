@@ -1,0 +1,11 @@
+
+-- get letest
+git pull origin master
+
+-- push local changes
+git commit -am "comments"
+git push origin master
+
+-- add files
+git add -A 
+
