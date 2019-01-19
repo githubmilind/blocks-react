@@ -16,8 +16,8 @@ class Block extends React.Component {
 
         this.state = {
             id: props.blockId,
-            nonce: "0",
-            data: "",
+            nonce: props.nonce,
+            data: props.blockData,
             hash: props.blockHash,
             prevHash: props.prevHash,
 
@@ -48,7 +48,7 @@ class Block extends React.Component {
 
                 if( '0x' + hashval != this.state.hash){
                     this.setState({nonce: x, hash: '0x' +hashval, mined: 'true'});
-                    this.props.invalidateBlocks(this.state.id, hashval);
+                    this.props.invalidateBlocks(this.state.id, this.state.data, x, hashval);
                 }
             }
         }
@@ -57,7 +57,8 @@ class Block extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ mined: nextProps.blockStatus, prevHash: nextProps.prevHash })
+        this.setState({ mined: nextProps.blockStatus, prevHash: nextProps.prevHash, 
+                    data: nextProps.blockData, hash:nextProps.blockHash })
    }
 
 
@@ -85,8 +86,8 @@ class Block extends React.Component {
                     </li>
                     <li className="list-group-item"><BasicComponent title="Previous Block hash" value={this.state.prevHash} /></li>
                     <li className="list-group-item"><BlockData title="Block data" 
-                                    value={this.state.data}
-                                    onChange={this.onDataChange}></BlockData></li>
+                                    blockData={this.state.data}
+                                    onChange={this.onDataChange} /></li>
                     <li className={this.state.mined == 'true' ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title="Block hash" 
                                     value={this.state.hash} /></li>
                 </ul>
