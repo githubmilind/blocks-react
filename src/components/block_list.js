@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Block from './block';
+import * as CONSTANTS from './constants';
 
-const DEFAULT_HASH = "0x0000";
 
 class BlockList extends React.Component {
 
@@ -14,7 +14,7 @@ class BlockList extends React.Component {
             this.state = JSON.parse(storedState);
         } else {
             this.state = {
-                blocks: [{ id: 0, mined: 'new', blockData:'', hash: DEFAULT_HASH, nonce: 0 },],
+                blocks: [{ id: 0, mined: 'new', blockData:'', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },],
                 lastId: 1
             };
         } 
@@ -37,13 +37,13 @@ class BlockList extends React.Component {
     }
 
     addNewBlock(){
-        this.setState({ blocks: this.state.blocks.concat({id: this.state.lastId, mined:'new', blockData:'', hash:DEFAULT_HASH, nonce: 0}),
+        this.setState({ blocks: this.state.blocks.concat({id: this.state.lastId, mined:'new', blockData:'', hash:CONSTANTS.DEFAULT_HASH, nonce: 0}),
                          lastId: this.state.lastId+1
                          });
     }
 
     resetBlockList(){
-        this.setState({blocks: [{ id: 0, mined: 'new', blockData: '', hash: DEFAULT_HASH, nonce: 0 },], lastId: 1});
+        this.setState({blocks: [{ id: 0, mined: 'new', blockData: '', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },], lastId: 1});
     }
 
     componentDidUpdate(){
@@ -61,7 +61,7 @@ class BlockList extends React.Component {
                         blockId={item.id}
                         nonce={item.nonce}
                         blockHash={item.hash}
-                        prevHash={index - 1 > -1 ? array[index - 1].hash : DEFAULT_HASH}
+                        prevHash={index - 1 > -1 ? array[index - 1].hash : CONSTANTS.DEFAULT_HASH}
                         blockStatus={item.mined}
                         invalidateBlocks={this.invalidateBlocks} 
                         blockData={item.blockData}/></div>))}

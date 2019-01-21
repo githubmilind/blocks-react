@@ -6,9 +6,7 @@ import hash from 'hash.js';
 import BasicComponent from './basic_component';
 import BlockData from './block_data';
 
-const MINE = "Mine Block";
-const MINE_PROCESSING = "Processing";
-const DEFAULT_HASH = "0x0000";
+import * as CONSTANTS from './constants';
 
 class Crypto extends React.Component {
 
@@ -18,10 +16,10 @@ class Crypto extends React.Component {
         this.state = {
             nonce: "1",
             data: "block data",
-            blockhash: DEFAULT_HASH,
+            blockhash: CONSTANTS.DEFAULT_HASH,
             blockhashint: 0,
             processHash: false,
-            buttonText: MINE
+            buttonText: CONSTANTS.MINE
         };
 
         this.dataChanged = this.dataChanged.bind(this);
@@ -50,7 +48,7 @@ class Crypto extends React.Component {
     handleMineClick() {
         if(this.state.processHash) 
             return;
-        this.setState({processHash: true, buttonText:MINE_PROCESSING});
+        this.setState({processHash: true, buttonText:CONSTANTS.MINE_PROCESSING});
     }
 
     componentDidUpdate() {
@@ -58,7 +56,7 @@ class Crypto extends React.Component {
     }    
 
     mineBlock(){
-        let hashval = DEFAULT_HASH;
+        let hashval = CONSTANTS.DEFAULT_HASH;
         let found = false;
         for(let x=0; x < 100000000 && !found; x++){
             const data = `Nonce:${x} Data: ${this.state.data}`; 
@@ -67,7 +65,7 @@ class Crypto extends React.Component {
                 found = true;
                 if( '0x' + hashval != this.state.hash){
                     this.setState({nonce: x, blockhash: '0x'+hashval, blockhashint: parseInt('0x'+hashval, 16),
-                            processHash: false, buttonText:MINE});
+                            processHash: false, buttonText:CONSTANTS.MINE});
                     return;
                 }
             }
@@ -100,8 +98,12 @@ class Crypto extends React.Component {
                         <li className="list-group-item"><BlockData title="Block data"
                             value={this.state.data}
                             onChange={this.dataChanged}></BlockData></li>
-                        <li className="list-group-item"><BasicComponent title="SHA256 hex"
-                            value={this.state.blockhash} /></li>
+                        <li className="list-group-item">
+                            <div>
+                                <div>SHA256 hex</div>
+                                <div><font size="3" color="red">{this.state.blockhash.substr(0, 6)}</font><font size="3">{this.state.blockhash.substr(6)}</font></div>
+                            </div>
+                        </li>
                         <li className="list-group-item"><BasicComponent title="SHA256 decimal"
                             value={this.state.blockhashint} /></li>
                     </ul>

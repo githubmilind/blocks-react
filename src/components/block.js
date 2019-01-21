@@ -2,13 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import hash from 'hash.js';
 
-
 import BasicComponent from './basic_component';
 import BlockData from './block_data';
-
-const MINE = "Mine Block";
-const MINE_PROCESSING = "Processing";
-const DEFALUT_HASH = "0x0000";
+import * as CONSTANTS from './constants';
 
 // create a new component. This component should produce some HTML
 class Block extends React.Component {
@@ -25,7 +21,7 @@ class Block extends React.Component {
 
             mined: props.blockStatus,
             processHash: false,
-            buttonText: MINE
+            buttonText: CONSTANTS.MINE
         };
 
         this.onDataChange = this.onDataChange.bind(this);
@@ -40,11 +36,11 @@ class Block extends React.Component {
     handleMineClick() {
         if (this.state.processHash)
             return;
-        this.setState({ processHash: true, buttonText: MINE_PROCESSING });
+        this.setState({ processHash: true, buttonText: CONSTANTS.MINE_PROCESSING });
     }    
 
     mineBlock(evt){
-        let hashval = DEFALUT_HASH;
+        let hashval = CONSTANTS.DEFALUT_HASH;
         let found = false;
         for(let x=0; x < 1000000 && !found; x++){
             const data = `Id:${this.state.id} PrevHash:${this.state.prevHash} Nonce:${x} Data: ${this.state.data}`; 
@@ -58,7 +54,7 @@ class Block extends React.Component {
                 }
             }
         }
-        this.setState({processHash: false, buttonText:MINE});
+        this.setState({processHash: false, buttonText:CONSTANTS.MINE});
     }
 
     componentWillReceiveProps(nextProps) {
@@ -96,12 +92,12 @@ class Block extends React.Component {
                             </div>
                         </div>
                     </li>
-                    <li className="list-group-item"><BasicComponent title="Previous Block hash" value={(this.state.prevHash === DEFALUT_HASH ? '' : '0x')+this.state.prevHash} /></li>
+                    <li className="list-group-item"><BasicComponent title="Previous Block hash" value={(this.state.prevHash === CONSTANTS.DEFAULT_HASH ? '' : '0x')+this.state.prevHash} /></li>
                     <li className="list-group-item"><BlockData title="Block data" 
                                     blockData={this.state.data}
                                     onChange={this.onDataChange} /></li>
                     <li className={this.state.mined == 'true' ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title="Block hash" 
-                                    value={(this.state.hash === DEFALUT_HASH ? '' : '0x')+ this.state.hash} /></li>
+                                    value={(this.state.hash === CONSTANTS.DEFAULT_HASH ? '' : '0x')+ this.state.hash} /></li>
                 </ul>
                 </div>
             </div>
