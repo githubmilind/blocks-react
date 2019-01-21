@@ -9,12 +9,12 @@ class BlockList extends React.Component {
     constructor(props){
         super(props);
 
-        var storedState = localStorage.getItem('BlockList');
+        var storedState = localStorage.getItem(CONSTANTS.STORAGE_KEY);
         if (storedState && storedState !== "") {
             this.state = JSON.parse(storedState);
         } else {
             this.state = {
-                blocks: [{ id: 0, mined: 'new', blockData:'', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },],
+                blocks: [{ id: 0, mined:CONSTANTS.BLOCK_STATUS_NEW, blockData:'', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },],
                 lastId: 1
             };
         } 
@@ -27,8 +27,8 @@ class BlockList extends React.Component {
     invalidateBlocks(blockId, newBlockData, newNonce, hashValue){
         var oldState = this.state.blocks.slice();
         
-        oldState = this.state.blocks.map(item => {return {id : item.id,  mined : item.id > blockId ? 'false' : 
-                                                                            item.id == blockId ? 'true' : item.mined, 
+        oldState = this.state.blocks.map(item => {return {id : item.id,  mined:item.id > blockId ? CONSTANTS.BLOCK_STATUS_NOT_MINED : 
+                                                                            (item.id == blockId ? CONSTANTS.BLOCK_STATUS_MINED : item.mined), 
                                                         blockData: item.id == blockId ? newBlockData : item.blockData,
                                                         hash: item.id == blockId ? hashValue : item.hash,
                                                         nonce: item.id == blockId ? newNonce: item.nonce}; });
@@ -37,17 +37,17 @@ class BlockList extends React.Component {
     }
 
     addNewBlock(){
-        this.setState({ blocks: this.state.blocks.concat({id: this.state.lastId, mined:'new', blockData:'', hash:CONSTANTS.DEFAULT_HASH, nonce: 0}),
+        this.setState({ blocks: this.state.blocks.concat({id: this.state.lastId, mined:CONSTANTS.BLOCK_STATUS_NEW, blockData:'', hash:CONSTANTS.DEFAULT_HASH, nonce: 0}),
                          lastId: this.state.lastId+1
                          });
     }
 
     resetBlockList(){
-        this.setState({blocks: [{ id: 0, mined: 'new', blockData: '', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },], lastId: 1});
+        this.setState({blocks: [{ id: 0, mined:CONSTANTS.BLOCK_STATUS_NEW, blockData: '', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },], lastId: 1});
     }
 
     componentDidUpdate(){
-        localStorage.setItem('BlockList', JSON.stringify(this.state));
+        localStorage.setItem(CONSTANTS.STORAGE_KEY, JSON.stringify(this.state));
     }
 
     render() {

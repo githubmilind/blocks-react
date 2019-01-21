@@ -21,7 +21,7 @@ class Block extends React.Component {
 
             mined: props.blockStatus,
             processHash: false,
-            buttonText: CONSTANTS.MINE
+            buttonText: CONSTANTS.BUTTON_MINE
         };
 
         this.onDataChange = this.onDataChange.bind(this);
@@ -30,13 +30,13 @@ class Block extends React.Component {
    }
 
     onDataChange(newValue){
-        this.setState({data: newValue, mined: 'false'});
+        this.setState({data: newValue, mined:CONSTANTS.BLOCK_STATUS_NOT_MINED});
     }
 
     handleMineClick() {
         if (this.state.processHash)
             return;
-        this.setState({ processHash: true, buttonText: CONSTANTS.MINE_PROCESSING });
+        this.setState({ processHash: true, buttonText: CONSTANTS.BUTTON_MINE_PROCESSING });
     }    
 
     mineBlock(evt){
@@ -49,12 +49,12 @@ class Block extends React.Component {
                 found = true;
 
                 if( hashval != this.state.hash){
-                    this.setState({nonce: x, hash: '0x'+hashval, mined: 'true'});
+                    this.setState({nonce: x, hash: '0x'+hashval, mined:CONSTANTS.BLOCK_STATUS_MINED});
                     this.props.invalidateBlocks(this.state.id, this.state.data, x, hashval);
                 }
             }
         }
-        this.setState({processHash: false, buttonText:CONSTANTS.MINE});
+        this.setState({processHash: false, buttonText:CONSTANTS.BUTTON_MINE});
     }
 
     componentWillReceiveProps(nextProps) {
@@ -70,7 +70,7 @@ class Block extends React.Component {
     render(){
         return (
             <div style={{width:500, 
-                backgroundColor:this.state.mined == 'true' ?'green': this.state.mined == 'new'? 'blue' : 'red'}} >
+                backgroundColor:this.state.mined == CONSTANTS.BLOCK_STATUS_MINED ?'green': this.state.mined == CONSTANTS.BLOCK_STATUS_NEW? 'blue' : 'red'}} >
                 <div style={{width:'99%', margin:3, height:386}}>
                 <div style={{height:2}}></div>
                 <ul className="list-unstyled list-group">
@@ -96,7 +96,7 @@ class Block extends React.Component {
                     <li className="list-group-item"><BlockData title="Block data" 
                                     blockData={this.state.data}
                                     onChange={this.onDataChange} /></li>
-                    <li className={this.state.mined == 'true' ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title="Block hash" 
+                    <li className={this.state.mined == CONSTANTS.BLOCK_STATUS_MINED ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title="Block hash" 
                                     value={(this.state.hash === CONSTANTS.DEFAULT_HASH ? '' : '0x')+ this.state.hash} /></li>
                 </ul>
                 </div>

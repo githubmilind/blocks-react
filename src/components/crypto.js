@@ -19,7 +19,7 @@ class Crypto extends React.Component {
             blockhash: CONSTANTS.DEFAULT_HASH,
             blockhashint: 0,
             processHash: false,
-            buttonText: CONSTANTS.MINE
+            buttonText: CONSTANTS.BUTTON_MINE
         };
 
         this.dataChanged = this.dataChanged.bind(this);
@@ -48,7 +48,7 @@ class Crypto extends React.Component {
     handleMineClick() {
         if(this.state.processHash) 
             return;
-        this.setState({processHash: true, buttonText:CONSTANTS.MINE_PROCESSING});
+        this.setState({processHash: true, buttonText:CONSTANTS.BUTTON_MINE_PROCESSING});
     }
 
     componentDidUpdate() {
@@ -65,7 +65,7 @@ class Crypto extends React.Component {
                 found = true;
                 if( '0x' + hashval != this.state.hash){
                     this.setState({nonce: x, blockhash: '0x'+hashval, blockhashint: parseInt('0x'+hashval, 16),
-                            processHash: false, buttonText:CONSTANTS.MINE});
+                            processHash: false, buttonText:CONSTANTS.BUTTON_MINE});
                     return;
                 }
             }
