@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Block from './block';
 
+const DEFAULT_HASH = "0x0000";
+
 class BlockList extends React.Component {
 
     constructor(props){
@@ -12,7 +14,7 @@ class BlockList extends React.Component {
             this.state = JSON.parse(storedState);
         } else {
             this.state = {
-                blocks: [{ id: 0, mined: 'new', blockData:'', hash: '0x00', nonce: 0 },],
+                blocks: [{ id: 0, mined: 'new', blockData:'', hash: DEFAULT_HASH, nonce: 0 },],
                 lastId: 1
             };
         } 
@@ -35,13 +37,13 @@ class BlockList extends React.Component {
     }
 
     addNewBlock(){
-        this.setState({ blocks: this.state.blocks.concat({id: this.state.lastId, mined:'new', blockData:'', hash:'0x00', nonce: 0}),
+        this.setState({ blocks: this.state.blocks.concat({id: this.state.lastId, mined:'new', blockData:'', hash:DEFAULT_HASH, nonce: 0}),
                          lastId: this.state.lastId+1
                          });
     }
 
     resetBlockList(){
-        this.setState({blocks: [{ id: 0, mined: 'new', blockData: '', hash: '0x00', nonce: 0 },], lastId: 1});
+        this.setState({blocks: [{ id: 0, mined: 'new', blockData: '', hash: DEFAULT_HASH, nonce: 0 },], lastId: 1});
     }
 
     componentDidUpdate(){
@@ -51,16 +53,15 @@ class BlockList extends React.Component {
     render() {
         return (
             <div>
-                <div style={{height:40}}>
-                    <div style={{float:"left", width:100}}>Block list</div>
-                    <div style={{float:"left", width:100}}><button onClick={this.resetBlockList}>Reset</button></div> 
+                <div style={{height:50}}>
+                    <div style={{float:"left", width:100}}><button className="btn btn-warning" onClick={this.resetBlockList}>Reset Block List</button></div> 
                 </div>
                 <div style={{ display: 'table', clear:"left" }}>
                     {this.state.blocks.map((item, index, array) => (<div key={item.id} style={{ display: 'table-cell', paddingRight: 5 }}><Block key={item.id}
                         blockId={item.id}
                         nonce={item.nonce}
                         blockHash={item.hash}
-                        prevHash={index - 1 > -1 ? array[index - 1].hash : '0x00'}
+                        prevHash={index - 1 > -1 ? array[index - 1].hash : DEFAULT_HASH}
                         blockStatus={item.mined}
                         invalidateBlocks={this.invalidateBlocks} 
                         blockData={item.blockData}/></div>))}

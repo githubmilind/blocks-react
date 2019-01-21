@@ -6,21 +6,29 @@ import hash from 'hash.js';
 import BasicComponent from './basic_component';
 import BlockData from './block_data';
 
+const MINE = "Mine Block";
+const MINE_PROCESSING = "Processing";
+const DEFAULT_HASH = "0x0000";
+
 class Crypto extends React.Component {
+
     constructor(props){
         super(props);
 
         this.state = {
             nonce: "1",
             data: "block data",
-            blockhash: "0x00",
-            blockhashint: 0
+            blockhash: DEFAULT_HASH,
+            blockhashint: 0,
+            processHash: false,
+            buttonText: MINE
         };
 
         this.dataChanged = this.dataChanged.bind(this);
         this.mineBlock = this.mineBlock.bind(this);
         this.hashBlock = this.hashBlock.bind(this);
         this.nonceChanged = this.nonceChanged.bind(this);
+        this.handleMineClick = this.handleMineClick.bind(this);
     }
 
     dataChanged(newValue) {
@@ -39,19 +47,32 @@ class Crypto extends React.Component {
         this.setState({blockhash: '0x' +hashval, blockhashint: parseInt('0x'+hashval, 16)});
     }
 
+    handleMineClick() {
+        if(this.state.processHash) 
+            return;
+        this.setState({processHash: true, buttonText:MINE_PROCESSING});
+    }
+
+    componentDidUpdate() {
+        if (this.state.processHash) setTimeout(this.mineBlock, 500)
+    }    
+
     mineBlock(){
-        let hashval = '0x00';
+        let hashval = DEFAULT_HASH;
         let found = false;
-        for(let x=0; x < 1000000 && !found; x++){
+        for(let x=0; x < 100000000 && !found; x++){
             const data = `Nonce:${x} Data: ${this.state.data}`; 
             hashval = hash.sha256().update(data).digest('hex');
             if(hashval.substr(0, 4) === '0000'){
                 found = true;
                 if( '0x' + hashval != this.state.hash){
-                    this.setState({nonce: x, blockhash: '0x' +hashval, blockhashint: parseInt('0x'+hashval, 16)});
+                    this.setState({nonce: x, blockhash: '0x'+hashval, blockhashint: parseInt('0x'+hashval, 16),
+                            processHash: false, buttonText:MINE});
+                    return;
                 }
             }
         }
+        this.setState({nonce: x, blockhash: 'NOT FOUND'});
     }
 
 
@@ -67,8 +88,12 @@ class Crypto extends React.Component {
                                 <div style={{ float: "left", width: 250 }}>
                                     <input type="text" onChange={this.nonceChanged} value={this.state.nonce} />
                                 </div>
-                                <div style={{ float: "left", width: 150 }}>
-                                    <button onClick={this.mineBlock}>Mine</button>
+                                <div style={{ float: "left", visibility: this.state.processHash == true ? "visible" : "hidden" }}
+                                    className='fa fa-spinner fa-spin'></div>
+                                <div style={{ float: "left", width: 100 }}>
+                                    <button className="btn btn-info btn-sm" 
+                                            disabled={this.state.processHash == true ? true: false}
+                                            onClick={this.handleMineClick}>{this.state.buttonText}</button>
                                 </div>
                             </div>
                         </li>

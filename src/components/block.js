@@ -5,8 +5,10 @@ import hash from 'hash.js';
 
 import BasicComponent from './basic_component';
 import BlockData from './block_data';
-import MenuNav from './menu_nav';
 
+const MINE = "Mine Block";
+const MINE_PROCESSING = "Processing";
+const DEFALUT_HASH = "0x0000";
 
 // create a new component. This component should produce some HTML
 class Block extends React.Component {
@@ -22,23 +24,27 @@ class Block extends React.Component {
             prevHash: props.prevHash,
 
             mined: props.blockStatus,
-            buttonDisabled: false,
-            buttonText: "Mine Block"
+            processHash: false,
+            buttonText: MINE
         };
 
         this.onDataChange = this.onDataChange.bind(this);
         this.mineBlock = this.mineBlock.bind(this);
+        this.handleMineClick = this.handleMineClick.bind(this);
    }
 
     onDataChange(newValue){
         this.setState({data: newValue, mined: 'false'});
     }
 
+    handleMineClick() {
+        if (this.state.processHash)
+            return;
+        this.setState({ processHash: true, buttonText: MINE_PROCESSING });
+    }    
+
     mineBlock(evt){
-
-        this.setState({buttonDisabled: true, buttonText: "please wait..."});
-
-        let hashval = '0x00';
+        let hashval = DEFALUT_HASH;
         let found = false;
         for(let x=0; x < 1000000 && !found; x++){
             const data = `Id:${this.state.id} PrevHash:${this.state.prevHash} Nonce:${x} Data: ${this.state.data}`; 
@@ -46,20 +52,23 @@ class Block extends React.Component {
             if(hashval.substr(0, 4) === '0000'){
                 found = true;
 
-                if( '0x' + hashval != this.state.hash){
-                    this.setState({nonce: x, hash: '0x' +hashval, mined: 'true'});
+                if( hashval != this.state.hash){
+                    this.setState({nonce: x, hash: '0x'+hashval, mined: 'true'});
                     this.props.invalidateBlocks(this.state.id, this.state.data, x, hashval);
                 }
             }
         }
-
-        this.setState({buttonDisabled: false, buttonText: "Mine Block"});
+        this.setState({processHash: false, buttonText:MINE});
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ mined: nextProps.blockStatus, prevHash: nextProps.prevHash, 
-                    data: nextProps.blockData, hash:nextProps.blockHash })
+                    data: nextProps.blockData, hash:nextProps.blockHash, nonce:nextProps.nonce });
    }
+
+   componentDidUpdate() {
+    if (this.state.processHash) setTimeout(this.mineBlock, 500)
+    }    
 
 
     render(){
@@ -77,19 +86,22 @@ class Block extends React.Component {
                             <div style={{float:"left", width:150}}>
                                 <BasicComponent title="Nonce" value={this.state.nonce} />
                             </div>
+                            <div style={{ float: "left", visibility: this.state.processHash == true ? "visible" : "hidden" }}
+                                    className='fa fa-spinner fa-spin'>
+                            </div>
                             <div style={{float:"left"}}>
-                                <button 
-                                    disabled={this.state.buttonDisabled}
-                                    onClick={this.mineBlock}>{this.state.buttonText}</button>
+                                <button className="btn btn-info btn-sm"
+                                    disabled={this.state.processHash == true ? true: false}
+                                    onClick={this.handleMineClick}>{this.state.buttonText}</button>
                             </div>
                         </div>
                     </li>
-                    <li className="list-group-item"><BasicComponent title="Previous Block hash" value={this.state.prevHash} /></li>
+                    <li className="list-group-item"><BasicComponent title="Previous Block hash" value={(this.state.prevHash === DEFALUT_HASH ? '' : '0x')+this.state.prevHash} /></li>
                     <li className="list-group-item"><BlockData title="Block data" 
                                     blockData={this.state.data}
                                     onChange={this.onDataChange} /></li>
                     <li className={this.state.mined == 'true' ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title="Block hash" 
-                                    value={this.state.hash} /></li>
+                                    value={(this.state.hash === DEFALUT_HASH ? '' : '0x')+ this.state.hash} /></li>
                 </ul>
                 </div>
             </div>
