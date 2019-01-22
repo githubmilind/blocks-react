@@ -6,16 +6,9 @@ import {Switch, Route} from 'react-router-dom';
 import BlockList from './block_list';
 import Crypto from './crypto';
 
-var DefaultRoute = BrowserRouter.DefaultRoute;
-
-const Cryptography = () => {
-       return ( <div><h1>Cryptography</h1></div> );
-}
-
 const BlockChain = () => {
-        return (<div><h1>Block Chain</h1></div>);
+        return (<div><h1>Distributed Block Chain</h1></div>);
 }
-
 
 class MenuNav extends Component {
     render() {

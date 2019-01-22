@@ -69,8 +69,8 @@ class Block extends React.Component {
 
     render(){
         return (
-            <div style={{width:500, 
-                backgroundColor:this.state.mined == CONSTANTS.BLOCK_STATUS_MINED ?'green': this.state.mined == CONSTANTS.BLOCK_STATUS_NEW? 'blue' : 'red'}} >
+            <div style={{width:500, borderStyle:'solid',
+                    borderColor:this.state.mined == CONSTANTS.BLOCK_STATUS_MINED ?'green': this.state.mined == CONSTANTS.BLOCK_STATUS_NEW? 'blue' : 'red'}} >
                 <div style={{width:'99%', margin:3, height:386}}>
                 <div style={{height:2}}></div>
                 <ul className="list-unstyled list-group">

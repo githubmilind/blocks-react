@@ -77,8 +77,7 @@ class Crypto extends React.Component {
     render(){
         return (
             <div>
-                <div style={{ width: '99%', margin: 3, height: 386 }}>
-                    <div style={{ height: 2 }}></div>
+                <div style={{ width: '99%', margin: 3, height: 395, borderColor:'gray', borderStyle:'solid' }}>
                     <ul className="list-unstyled list-group">
                         <li className="list-group-item">
                             <div style={{ height: 40 }}>
