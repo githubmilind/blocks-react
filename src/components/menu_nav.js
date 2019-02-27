@@ -11,6 +11,7 @@ import {Switch, Route} from 'react-router-dom';
 import BlockList from './block_list';
 import Crypto from './crypto';
 import BlockChain from './block_chain';
+import * as CONSTANTS from './constants';
 
 
 class MenuNav extends Component {
@@ -49,11 +50,11 @@ class MenuNav extends Component {
                     <hr />
                     <div className="row">
                         <Link exact="true" to="/cryptography"><div id='cryptodiv' className={this.state.cryptoClass}
-                            onClick={(e) => this.linkClicked(e)}>Cryptography</div></Link>
+                            onClick={(e) => this.linkClicked(e)}>{CONSTANTS.MENU_CRYPTOGRAPHY}</div></Link>
                         <Link exact="true" to="/blocklist"><div id='blockListdiv' className={this.state.blockListClass}
-                            onClick={(e) => this.linkClicked(e)}>Blockchain</div></Link>
+                            onClick={(e) => this.linkClicked(e)}>{CONSTANTS.MENU_BLOCKCHAIN}</div></Link>
                         <Link exact="true" to="/blockchain"><div id='blockChaindiv' className={this.state.blockChainClass}
-                            onClick={(e) => this.linkClicked(e)}>Distributed Blockchain</div></Link>
+                            onClick={(e) => this.linkClicked(e)}>{CONSTANTS.MENU_BLOCKCHAIN_DIST}</div></Link>
                     </div>
                     <hr />
                     <div>

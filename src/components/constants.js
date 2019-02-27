@@ -12,3 +12,8 @@ export const BLOCK_STATUS_NEW = "New";
 export const BLOCK_STATUS_MINED = "Mined";
 export const BLOCK_STATUS_NOT_MINED = "NotMined";
 
+export const MENU_CRYPTOGRAPHY = "Cryptography";
+export const MENU_BLOCKCHAIN = "Blockchain";
+export const MENU_BLOCKCHAIN_DIST = "Distributed Blockchain";
+
+
