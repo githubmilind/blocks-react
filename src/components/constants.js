@@ -1,3 +1,7 @@
+/*
+** Blockchain - Concepts & Demo
+** Milind Pansare
+*/
 
 export const BUTTON_MINE = "Mine Block";
 export const BUTTON_MINE_PROCESSING = "Processing";

@@ -1,3 +1,7 @@
+/*
+** Blockchain - Concepts & Demo
+** Milind Pansare
+*/
 
 import React from 'react';
 import ReactDOM from 'react-dom';
