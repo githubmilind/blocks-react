@@ -1,3 +1,8 @@
+/*
+** Blockchain - Concepts & Demo
+** Milind Pansare
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Block from './block';
@@ -12,10 +17,12 @@ class BlockList extends React.Component {
         var storedState = localStorage.getItem(CONSTANTS.STORAGE_KEY);
         if (storedState && storedState !== "") {
             this.state = JSON.parse(storedState);
+            this.state.resetAddBlockOption = props.resetAddBlockOption !== undefined && props.resetAddBlockOption == "false" ? 'false' : 'true';
         } else {
             this.state = {
                 blocks: [{ id: 0, mined:CONSTANTS.BLOCK_STATUS_NEW, blockData:'', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },],
-                lastId: 1
+                lastId: 1,
+                resetAddBlockOption: props.resetAddBlockOption !== undefined && props.resetAddBlockOption == "false" ? 'false' : 'true'
             };
         } 
         
@@ -43,7 +50,7 @@ class BlockList extends React.Component {
     }
 
     resetBlockList(){
-        this.setState({blocks: [{ id: 0, mined:CONSTANTS.BLOCK_STATUS_NEW, blockData: '', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },], lastId: 1});
+        this.setState({blocks: [{ id: 0, mined:CONSTANTS.BLOCK_STATUS_NEW, blockData: '', hash:CONSTANTS.DEFAULT_HASH, nonce: 0 },], lastId: 1, resetAddBlockOption: 'true'});
     }
 
     componentDidUpdate(){
@@ -53,9 +60,11 @@ class BlockList extends React.Component {
     render() {
         return (
             <div>
+                { this.state.resetAddBlockOption === 'true' && (
                 <div style={{height:50}}>
                     <div style={{float:"left", width:100}}><button className="btn btn-warning" onClick={this.resetBlockList}>Reset Block List</button></div> 
                 </div>
+                )}
                 <div style={{ display: 'table', clear:"left" }}>
                     {this.state.blocks.map((item, index, array) => (<div key={item.id} style={{ display: 'table-cell', paddingRight: 5 }}><Block key={item.id}
                         blockId={item.id}
@@ -65,9 +74,12 @@ class BlockList extends React.Component {
                         blockStatus={item.mined}
                         invalidateBlocks={this.invalidateBlocks} 
                         blockData={item.blockData}/></div>))}
+
+                { this.state.resetAddBlockOption === 'true' && (
                     <div className="align-items-center justify-content-center">
                         <button className="btn btn-primary btn-lg" onClick={this.addNewBlock}>Add New Block</button>
                     </div>
+                )}
                 </div>
             </div>
         );

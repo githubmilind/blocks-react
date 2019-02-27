@@ -6,7 +6,7 @@ import BasicComponent from './basic_component';
 import BlockData from './block_data';
 import * as CONSTANTS from './constants';
 
-// create a new component. This component should produce some HTML
+
 class Block extends React.Component {
 
     constructor(props){

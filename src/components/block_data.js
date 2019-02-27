@@ -1,3 +1,8 @@
+/*
+** Blockchain - Concepts & Demo
+** Milind Pansare
+*/
+
 import React, { Component } from 'react';
 
 class BlockData extends Component {

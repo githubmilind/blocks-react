@@ -1,3 +1,8 @@
+/*
+** Blockchain - Concepts & Demo
+** Milind Pansare
+*/
+
 import React, { Component } from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import {Link} from 'react-router-dom';
@@ -5,23 +10,51 @@ import {Switch, Route} from 'react-router-dom';
 
 import BlockList from './block_list';
 import Crypto from './crypto';
+import BlockChain from './block_chain';
 
-const BlockChain = () => {
-        return (<div><h1>Distributed Block Chain</h1></div>);
-}
 
 class MenuNav extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {  
+                        cryptoClass: 'col-md-2',
+                        blockListClass: 'col-md-2',
+                        blockChainClass: 'col-md-2' };
+
+        this.linkClicked = this.linkClicked.bind(this);
+    }
+
+    linkClicked(evt){
+        switch(evt.target.id){
+            case 'cryptodiv': 
+                this.setState({cryptoClass: 'col-md-2 btn-primary', blockListClass:'col-md-2', blockChainClass:'col-md-2'});
+                break;
+            case 'blockListdiv': 
+                this.setState({cryptoClass: 'col-md-2', blockListClass:'col-md-2 btn-primary', blockChainClass:'col-md-2'});
+                break;
+            case 'blockChaindiv': 
+                this.setState({cryptoClass: 'col-md-2', blockListClass:'col-md-2', blockChainClass:'col-md-2 btn-primary'});
+                break;
+        }
+    }
+
     render() {
         return (
             <BrowserRouter>
                 <div>
                     <header>
-                        <div className="row">
-                            <Link exact="true" to="/cryptography"><div className="col-md-2">Cryptography</div></Link>
-                            <Link exact="true" to="/blocklist"><div className="col-md-2">Block list</div></Link>
-                            <Link exact="true" to="/blockchain"><div className="col-md-2">Blockchain distributed</div></Link>
-                        </div>
+                        <h4>BlockChain <u><em>Concepts & Demo</em></u></h4>
                     </header>
+                    <hr />
+                    <div className="row">
+                        <Link exact="true" to="/cryptography"><div id='cryptodiv' className={this.state.cryptoClass}
+                            onClick={(e) => this.linkClicked(e)}>Cryptography</div></Link>
+                        <Link exact="true" to="/blocklist"><div id='blockListdiv' className={this.state.blockListClass}
+                            onClick={(e) => this.linkClicked(e)}>Blockchain</div></Link>
+                        <Link exact="true" to="/blockchain"><div id='blockChaindiv' className={this.state.blockChainClass}
+                            onClick={(e) => this.linkClicked(e)}>Distributed Blockchain</div></Link>
+                    </div>
                     <hr />
                     <div>
                         <Switch>

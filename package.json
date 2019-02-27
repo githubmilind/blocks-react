@@ -22,12 +22,16 @@
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
+    "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-1": "^6.1.18",
     "hash.js": "^1.1.7",
     "lodash": "^3.10.1",
     "react": "16.3.2",
     "react-dom": "16.3.2",
     "react-redux": "5.0.7",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-preset-env": "1.5.2",
+    "babel-preset-react": "6.24.1"
   }
 }
