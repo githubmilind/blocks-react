@@ -101,7 +101,8 @@ class Block extends React.Component {
                     <li className="list-group-item"><BlockData title="Block data" 
                                     blockData={this.state.data}
                                     onChange={this.onDataChange} /></li>
-                    <li className={this.state.mined == CONSTANTS.BLOCK_STATUS_MINED ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title="Block hash" 
+                    <li className={this.state.mined == CONSTANTS.BLOCK_STATUS_MINED ? 'list-group-item' : 'list-group-item list-group-item-danger'}><BasicComponent title={'Block hash' + 
+                                        (this.state.mined !== CONSTANTS.BLOCK_STATUS_MINED ? ' (Invalid hash => Mine)' : '')}
                                     value={(this.state.hash === CONSTANTS.DEFAULT_HASH ? '' : '0x')+ this.state.hash} /></li>
                 </ul>
                 </div>

@@ -14,7 +14,7 @@ class BlockList extends React.Component {
     constructor(props){
         super(props);
 
-        var storedState = localStorage.getItem(CONSTANTS.STORAGE_KEY);
+        var storedState = localStorage.getItem(CONSTANTS.STORAGE_KEY_BLOCKLIST);
         if (storedState && storedState !== "") {
             this.state = JSON.parse(storedState);
             this.state.resetAddBlockOption = props.resetAddBlockOption !== undefined && props.resetAddBlockOption == "false" ? 'false' : 'true';
@@ -54,7 +54,7 @@ class BlockList extends React.Component {
     }
 
     componentDidUpdate(){
-        localStorage.setItem(CONSTANTS.STORAGE_KEY, JSON.stringify(this.state));
+        localStorage.setItem(CONSTANTS.STORAGE_KEY_BLOCKLIST, JSON.stringify(this.state));
     }
 
     render() {

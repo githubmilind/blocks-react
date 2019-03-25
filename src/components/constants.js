@@ -6,7 +6,9 @@
 export const BUTTON_MINE = "Mine Block";
 export const BUTTON_MINE_PROCESSING = "Processing";
 export const DEFAULT_HASH = "0x0000";
-export const STORAGE_KEY = "BlockList";
+
+export const STORAGE_KEY_BLOCKLIST = "BlockList";
+export const STORAGE_KEY_BLOCKCHAIN = "BlockChain";
 
 export const BLOCK_STATUS_NEW = "New";
 export const BLOCK_STATUS_MINED = "Mined";

@@ -22,6 +22,8 @@ class Crypto extends React.Component {
             data: "block data",
             blockhash: CONSTANTS.DEFAULT_HASH,
             blockhashint: 0,
+            complexity: 4,
+            hashTime: 0,
             processHash: false,
             buttonText: CONSTANTS.BUTTON_MINE
         };
@@ -31,11 +33,16 @@ class Crypto extends React.Component {
         this.hashBlock = this.hashBlock.bind(this);
         this.nonceChanged = this.nonceChanged.bind(this);
         this.handleMineClick = this.handleMineClick.bind(this);
+        this.complexityChanged = this.complexityChanged.bind(this);
     }
 
     dataChanged(newValue) {
         this.setState({data:newValue});
         this.hashBlock();
+    }
+
+    complexityChanged(evt) {
+        this.setState({complexity: evt.target.value});
     }
 
     nonceChanged(evt){
@@ -44,9 +51,13 @@ class Crypto extends React.Component {
     }
 
     hashBlock(){
+        let startTime = new Date();
         const data = `Nonce:${this.state.nonce} Data: ${this.state.data}`; 
         const hashval = hash.sha256().update(data).digest('hex');
-        this.setState({blockhash: '0x' +hashval, blockhashint: parseInt('0x'+hashval, 16)});
+        let endTime = new Date();
+        let timeDiff = Math.abs(endTime.getTime() - startTime.getTime())/1000;
+
+        this.setState({blockhash: '0x' +hashval, blockhashint: parseInt('0x'+hashval, 16), hashTime:timeDiff});
     }
 
     handleMineClick() {
@@ -60,16 +71,20 @@ class Crypto extends React.Component {
     }    
 
     mineBlock(){
+        let startTime = new Date();
         let hashval = CONSTANTS.DEFAULT_HASH;
         let found = false;
         for(let x=0; x < 100000000 && !found; x++){
             const data = `Nonce:${x} Data: ${this.state.data}`; 
             hashval = hash.sha256().update(data).digest('hex');
-            if(hashval.substr(0, 4) === '0000'){
+            if(hashval.substr(0, this.state.complexity) === "0".repeat(this.state.complexity)){
                 found = true;
                 if( '0x' + hashval != this.state.hash){
+                    let endTime = new Date();
+                    let timeDiff = Math.abs(endTime.getTime() - startTime.getTime())/1000;
+
                     this.setState({nonce: x, blockhash: '0x'+hashval, blockhashint: parseInt('0x'+hashval, 16),
-                            processHash: false, buttonText:CONSTANTS.BUTTON_MINE});
+                            processHash: false, buttonText:CONSTANTS.BUTTON_MINE, hashTime:timeDiff});
                     return;
                 }
             }
@@ -81,7 +96,7 @@ class Crypto extends React.Component {
     render(){
         return (
             <div>
-                <div style={{ width: '99%', margin: 3, height: 395, borderColor:'gray', borderStyle:'solid' }}>
+                <div style={{ width: '70%', margin: 3, height: 540, borderColor:'gray', borderStyle:'solid' }}>
                     <ul className="list-unstyled list-group">
                         <li className="list-group-item">
                             <div style={{ height: 40 }}>
@@ -100,11 +115,20 @@ class Crypto extends React.Component {
                         </li>
                         <li className="list-group-item"><BlockData title="Block data"
                             value={this.state.data}
-                            onChange={this.dataChanged}></BlockData></li>
+                            onChange={this.dataChanged}></BlockData>
+                        </li>
+                        <li className="list-group-item">
+                            <div>
+                                <div>Complexity</div>
+                                <div><input type="text" onChange={this.complexityChanged} value={this.state.complexity} /></div>
+                            </div>
+                        </li>
+                        <li className="list-group-item"><BasicComponent title="Hash time (sec)"
+                            value={this.state.hashTime} /></li>
                         <li className="list-group-item">
                             <div>
                                 <div>SHA256 hex</div>
-                                <div><font size="3" color="red">{this.state.blockhash.substr(0, 6)}</font><font size="3">{this.state.blockhash.substr(6)}</font></div>
+                                <div><font size="3" color="red">{this.state.blockhash.substr(0, 2+parseInt(this.state.complexity, 10))}</font><font size="3">{this.state.blockhash.substr(6)}</font></div>
                             </div>
                         </li>
                         <li className="list-group-item"><BasicComponent title="SHA256 decimal"
